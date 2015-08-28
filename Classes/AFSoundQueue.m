@@ -169,11 +169,26 @@
         
         if (_queuePlayer.status == AFSoundStatusNotStarted || _queuePlayer.status == AFSoundStatusPaused || _queuePlayer.status == AFSoundStatusFinished) {
             
-//            [_feedbackTimer resumeTimer];
+            [_feedbackTimer resumeTimer];
         }
 
         _queuePlayer = [[AFSoundPlayback alloc] initWithItem:item];
         [_queuePlayer play];
+        [[MPRemoteCommandCenter sharedCommandCenter] playCommand];
+        
+    }
+}
+
+-(void)playItem:(AFSoundItem *)item atSecond:(NSInteger)second {
+    
+    if ([self.items containsObject:item]) {
+        
+        if (self.queuePlayer.status == AFSoundStatusNotStarted || self.queuePlayer.status == AFSoundStatusPaused || self.queuePlayer.status == AFSoundStatusFinished) {
+            [self.feedbackTimer resumeTimer];
+        }
+        
+        self.queuePlayer = [[AFSoundPlayback alloc] initWithItem:item];
+        [self.queuePlayer playAtSecond:second];
         [[MPRemoteCommandCenter sharedCommandCenter] playCommand];
         
     }
@@ -214,6 +229,10 @@
                 break;
         }
     }
+}
+
+-(AFSoundStatus)status {
+    return self.queuePlayer ? [self.queuePlayer status] : AFSoundStatusNotStarted;
 }
 
 @end

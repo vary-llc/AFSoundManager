@@ -116,13 +116,12 @@ NSString * const AFSoundPlaybackFinishedNotification = @"kAFSoundPlaybackFinishe
 }
 
 -(void)restart {
-    
     [_player seekToTime:CMTimeMake(0, 1)];
 }
 
 -(void)playAtSecond:(NSInteger)second {
-    
     [_player seekToTime:CMTimeMake(second, 1)];
+    [self play];
 }
 
 -(void)remoteControlReceivedWithEvent:(UIEvent *)receivedEvent {
