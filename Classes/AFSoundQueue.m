@@ -51,13 +51,13 @@
     
     _feedbackTimer = [NSTimer scheduledTimerWithTimeInterval:updateRate block:^{
         NSLog(@"%s: %f", __func__, updateRate);
-        if (block) {
+        if (block && self.queuePlayer && self.queuePlayer.currentItem) {
             
             _queuePlayer.currentItem.timePlayed = (int)CMTimeGetSeconds(_queuePlayer.player.currentTime);
             block(_queuePlayer.currentItem);
         }
         
-        if (_queuePlayer.currentItem.timePlayed == _queuePlayer.currentItem.duration) {
+        if (self.queuePlayer && self.queuePlayer.currentItem && _queuePlayer.currentItem.timePlayed == _queuePlayer.currentItem.duration) {
             
             if (finishedBlock) {
                 
