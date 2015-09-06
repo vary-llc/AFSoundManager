@@ -135,18 +135,22 @@
 
 -(void)playNextItem {
     NSInteger nextIndex = [self.dataSource indexOfItem:[self.queuePlayer currentItem]] + 1;
-    [self playItemAtIndex:nextIndex];
+    if ([self.dataSource numberOfItems] > nextIndex) {
+        [self playItemAtIndex:nextIndex];
+    }
 }
 
 -(void)playPreviousItem {
     NSInteger prevIndex = [self.dataSource indexOfItem:[self.queuePlayer currentItem]] - 1;
-    [self playItemAtIndex:prevIndex];
+    if (prevIndex >= 0) {
+        [self playItemAtIndex:prevIndex];
+    }
 }
 
 -(void)playItemAtIndex:(NSInteger)index {
     
     if (self.dataSource) {
-        if ([self.dataSource numberOfItems] > index) {
+        if ([self.dataSource numberOfItems] > index && index >=0 ) {
             AFSoundItem *item = [self.dataSource itemAtIndex:index];
             [self playItem:item];
         }
