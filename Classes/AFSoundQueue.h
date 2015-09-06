@@ -11,6 +11,14 @@
 #import "AFSoundPlayback.h"
 #import "AFSoundItem.h"
 
+@class AFSoundItem;
+
+@protocol AFSoundQueueDataSource <NSObject>
+- (NSInteger)numberOfItems;
+- (AFSoundItem *)itemAtIndex:(NSInteger)index;
+- (NSInteger)indexOfItem:(AFSoundItem *)item;
+@end
+
 @interface AFSoundQueue : NSObject
 
 typedef void (^feedbackBlock)(AFSoundItem *item);
@@ -19,6 +27,7 @@ typedef void (^itemFinishedBlock)(AFSoundItem *nextItem);
 -(id)initWithItems:(NSArray *)items;
 
 @property (nonatomic) AFSoundStatus status;
+@property (nonatomic, weak) id <AFSoundQueueDataSource> dataSource;
 
 -(void)addItem:(AFSoundItem *)item;
 -(void)addItem:(AFSoundItem *)item atIndex:(NSInteger)index;

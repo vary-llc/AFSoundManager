@@ -136,62 +136,47 @@
 }
 
 -(void)playNextItem {
-        
-    if ([_items containsObject:_queuePlayer.currentItem]) {
-        
-        [self playItemAtIndex:([_items indexOfObject:_queuePlayer.currentItem] + 1)];
-        [[MPRemoteCommandCenter sharedCommandCenter] nextTrackCommand];
-        
-        [_feedbackTimer resumeTimer];
-    }
+    NSInteger nextIndex = [self.dataSource indexOfItem:[self.queuePlayer currentItem]] + 1;
+    [self playItemAtIndex:nextIndex];
 }
 
 -(void)playPreviousItem {
-    
-    if ([_items containsObject:_queuePlayer.currentItem] && [_items indexOfObject:_queuePlayer.currentItem] > 0) {
-        
-        [self playItemAtIndex:([_items indexOfObject:_queuePlayer.currentItem] - 1)];
-        [[MPRemoteCommandCenter sharedCommandCenter] previousTrackCommand];
-    }
+    NSInteger prevIndex = [self.dataSource indexOfItem:[self.queuePlayer currentItem]] - 1;
+    [self playItemAtIndex:prevIndex];
 }
 
 -(void)playItemAtIndex:(NSInteger)index {
     
-    if (_items.count > index) {
-        
-        [self playItem:_items[index]];
+    if (self.dataSource) {
+        if ([self.dataSource numberOfItems] > index) {
+            AFSoundItem *item = [self.dataSource itemAtIndex:index];
+            [self playItem:item];
+        }
     }
 }
 
 -(void)playItem:(AFSoundItem *)item {
     
-    if ([_items containsObject:item]) {
+    if (_queuePlayer.status == AFSoundStatusNotStarted || _queuePlayer.status == AFSoundStatusPaused || _queuePlayer.status == AFSoundStatusFinished) {
         
-        if (_queuePlayer.status == AFSoundStatusNotStarted || _queuePlayer.status == AFSoundStatusPaused || _queuePlayer.status == AFSoundStatusFinished) {
-            
-            [_feedbackTimer resumeTimer];
-        }
-
-        _queuePlayer = [[AFSoundPlayback alloc] initWithItem:item];
-        [_queuePlayer play];
-        [[MPRemoteCommandCenter sharedCommandCenter] playCommand];
-        
+        [_feedbackTimer resumeTimer];
     }
+    
+    _queuePlayer = [[AFSoundPlayback alloc] initWithItem:item];
+    [_queuePlayer play];
+    [[MPRemoteCommandCenter sharedCommandCenter] playCommand];
+    
 }
 
 -(void)playItem:(AFSoundItem *)item atSecond:(NSInteger)second {
     
-    if ([self.items containsObject:item]) {
-        
-        if (self.queuePlayer.status == AFSoundStatusNotStarted || self.queuePlayer.status == AFSoundStatusPaused || self.queuePlayer.status == AFSoundStatusFinished) {
-            [self.feedbackTimer resumeTimer];
-        }
-        
-        self.queuePlayer = [[AFSoundPlayback alloc] initWithItem:item];
-        [self.queuePlayer playAtSecond:second];
-        [[MPRemoteCommandCenter sharedCommandCenter] playCommand];
-        
+    if (self.queuePlayer.status == AFSoundStatusNotStarted || self.queuePlayer.status == AFSoundStatusPaused || self.queuePlayer.status == AFSoundStatusFinished) {
+        [self.feedbackTimer resumeTimer];
     }
+    
+    self.queuePlayer = [[AFSoundPlayback alloc] initWithItem:item];
+    [self.queuePlayer playAtSecond:second];
+    [[MPRemoteCommandCenter sharedCommandCenter] playCommand];
 }
 
 -(AFSoundItem *)getCurrentItem {
@@ -202,11 +187,7 @@
 -(NSInteger)indexOfCurrentItem {
     
     AFSoundItem *currentItem = [self getCurrentItem];
-    
-    if ([_items containsObject:currentItem]) {
-        
-        return [_items indexOfObject:currentItem];
-    }
+    return [self.dataSource indexOfItem:currentItem];
     
     return NAN;
 }
