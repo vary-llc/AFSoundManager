@@ -48,13 +48,12 @@
         
         updateRate = 1 / _queuePlayer.player.rate;
     }
-
+    
     _feedbackTimer = [NSTimer scheduledTimerWithTimeInterval:updateRate block:^{
-        
+        NSLog(@"%s: %f", __func__, updateRate);
         if (block) {
             
             _queuePlayer.currentItem.timePlayed = (int)CMTimeGetSeconds(_queuePlayer.player.currentTime);
-            
             block(_queuePlayer.currentItem);
         }
         
@@ -62,11 +61,10 @@
             
             if (finishedBlock) {
                 
-                if ([self indexOfCurrentItem] + 1 < _items.count) {
-                    
-                    finishedBlock(_items[[self indexOfCurrentItem] + 1]);
+                if ([self indexOfCurrentItem] + 1 < [self.dataSource numberOfItems]) {
+                    AFSoundItem *nextItem = [self.dataSource itemAtIndex:[self indexOfCurrentItem] + 1];
+                    finishedBlock(nextItem);
                 } else {
-                    
                     finishedBlock(nil);
                 }
             }
@@ -97,7 +95,7 @@
 }
 
 -(void)removeItemAtIndex:(NSInteger)index {
-
+    
     if (_items.count >= index) {
         
         AFSoundItem *item = _items[index];
