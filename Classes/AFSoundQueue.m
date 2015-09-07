@@ -42,7 +42,7 @@
 
 -(void)listenFeedbackUpdatesWithBlock:(feedbackBlock)block andFinishedBlock:(itemFinishedBlock)finishedBlock {
     
-    CGFloat updateRate = 1;
+    CGFloat updateRate = 0.5f;
     
     if (_queuePlayer.player.rate > 0) {
         
@@ -54,10 +54,11 @@
         
         if (self.queuePlayer && self.queuePlayer.currentItem) {
             
-            [self updateNowPlayingInfo];
+            if (self.queuePlayer.currentItem.timePlayed > 0) {
+                [self updateNowPlayingInfo];
+            }
             
             if (block) {
-                
                 _queuePlayer.currentItem.timePlayed = (int)CMTimeGetSeconds(_queuePlayer.player.currentTime);
                 block(_queuePlayer.currentItem);
             }
