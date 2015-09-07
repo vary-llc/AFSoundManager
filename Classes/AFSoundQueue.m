@@ -51,28 +51,35 @@
     
     _feedbackTimer = [NSTimer scheduledTimerWithTimeInterval:updateRate block:^{
         NSLog(@"%s: %f", __func__, updateRate);
-        if (block && self.queuePlayer && self.queuePlayer.currentItem) {
-            
-            _queuePlayer.currentItem.timePlayed = (int)CMTimeGetSeconds(_queuePlayer.player.currentTime);
-            block(_queuePlayer.currentItem);
-        }
         
-        if (self.queuePlayer && self.queuePlayer.currentItem && _queuePlayer.currentItem.timePlayed == _queuePlayer.currentItem.duration) {
+        if (self.queuePlayer && self.queuePlayer.currentItem) {
             
-            if (finishedBlock) {
+            [self updateNowPlayingInfo];
+            
+            if (block) {
                 
-                if ([self indexOfCurrentItem] + 1 < [self.dataSource numberOfItems]) {
-                    AFSoundItem *nextItem = [self.dataSource itemAtIndex:[self indexOfCurrentItem] + 1];
-                    finishedBlock(nextItem);
-                } else {
-                    finishedBlock(nil);
-                }
+                _queuePlayer.currentItem.timePlayed = (int)CMTimeGetSeconds(_queuePlayer.player.currentTime);
+                block(_queuePlayer.currentItem);
             }
             
-            [_feedbackTimer pauseTimer];
-            
-            [self playNextItem];
+            if (self.queuePlayer.currentItem.timePlayed == self.queuePlayer.currentItem.duration) {
+                
+                if (finishedBlock) {
+                    
+                    if ([self indexOfCurrentItem] + 1 < [self.dataSource numberOfItems]) {
+                        AFSoundItem *nextItem = [self.dataSource itemAtIndex:[self indexOfCurrentItem] + 1];
+                        finishedBlock(nextItem);
+                    } else {
+                        finishedBlock(nil);
+                    }
+                }
+                
+                [_feedbackTimer pauseTimer];
+                
+                [self playNextItem];
+            }
         }
+        
     } repeats:YES];
 }
 
@@ -126,10 +133,8 @@
 }
 
 -(void)pause {
-    
     [_queuePlayer pause];
     [[MPRemoteCommandCenter sharedCommandCenter] pauseCommand];
-    
     [_feedbackTimer pauseTimer];
 }
 
@@ -158,26 +163,20 @@
 }
 
 -(void)playItem:(AFSoundItem *)item {
-    
-    if (_queuePlayer.status == AFSoundStatusNotStarted || _queuePlayer.status == AFSoundStatusPaused || _queuePlayer.status == AFSoundStatusFinished) {
-        
-        [_feedbackTimer resumeTimer];
-    }
-    
-    _queuePlayer = [[AFSoundPlayback alloc] initWithItem:item];
-    [_queuePlayer play];
-    [[MPRemoteCommandCenter sharedCommandCenter] playCommand];
-    
+    [self playItem:item atSecond:0];
 }
 
 -(void)playItem:(AFSoundItem *)item atSecond:(NSInteger)second {
-    
     if (self.queuePlayer.status == AFSoundStatusNotStarted || self.queuePlayer.status == AFSoundStatusPaused || self.queuePlayer.status == AFSoundStatusFinished) {
         [self.feedbackTimer resumeTimer];
     }
-    
     self.queuePlayer = [[AFSoundPlayback alloc] initWithItem:item];
-    [self.queuePlayer playAtSecond:second];
+    if (second > 0) {
+        [self.queuePlayer playAtSecond:second];
+    } else {
+        [self.queuePlayer play];
+    }
+    
     [[MPRemoteCommandCenter sharedCommandCenter] playCommand];
 }
 
@@ -216,6 +215,11 @@
 
 -(AFSoundStatus)status {
     return self.queuePlayer ? [self.queuePlayer status] : AFSoundStatusNotStarted;
+}
+
+#pragma mark -- Now Playing Info
+-(void)updateNowPlayingInfo {
+    
 }
 
 @end
