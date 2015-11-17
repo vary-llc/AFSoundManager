@@ -221,7 +221,7 @@
 #pragma mark -- Now Playing Info
 -(void)updateNowPlayingInfo{
     AFSoundItem *currentItem = [self getCurrentItem];
-    [self setTitle:currentItem.title artist:currentItem.artist albumTitle:currentItem.album artwork:currentItem.artwork totalDuration:currentItem.duration currentTime:currentItem.timePlayed];
+    [self setTitle:currentItem.title artist:currentItem.artist albumTitle:currentItem.album artwork:currentItem.artwork totalDuration:@(currentItem.duration) currentTime:@(currentItem.timePlayed)];
 }
 
 - (void)setTitle:(NSString *)title artist:(NSString *)artist albumTitle:(NSString *)albumTitle artwork:(UIImage *)artwork totalDuration:(NSNumber *)totalDuration currentTime:(NSNumber *)currentTime
