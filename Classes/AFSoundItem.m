@@ -44,7 +44,7 @@
         
         _URL = URL;
         
-        [self fetchMetadata];
+       // [self fetchMetadata];
     }
     
     return self;
