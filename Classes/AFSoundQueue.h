@@ -47,6 +47,5 @@ typedef void (^itemFinishedBlock)(AFSoundItem *nextItem);
 -(NSInteger)indexOfCurrentItem;
 
 -(void)listenFeedbackUpdatesWithBlock:(feedbackBlock)block andFinishedBlock:(itemFinishedBlock)finishedBlock;
--(void)updateNowPlayingInfo:(NSDictionary *)info;
 
 @end
