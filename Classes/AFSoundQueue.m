@@ -34,6 +34,7 @@
             _queuePlayer = [[AFSoundPlayback alloc] initWithItem:items.firstObject];
             
             [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+            [self becomeFirstResponder];
         }
     }
     
@@ -199,6 +200,13 @@
     if (receivedEvent.type == UIEventTypeRemoteControl) {
         
         switch (receivedEvent.subtype) {
+            case UIEventSubtypeRemoteControlPlay:
+                [self playCurrentItem];
+                break;
+                
+            case UIEventSubtypeRemoteControlPause:
+                [self pause];
+                break;
                 
             case UIEventSubtypeRemoteControlPreviousTrack:
                 [self playPreviousItem];
