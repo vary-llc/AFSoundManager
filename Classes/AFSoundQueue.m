@@ -219,8 +219,18 @@
 }
 
 #pragma mark -- Now Playing Info
--(void)updateNowPlayingInfo {
-    
+-(void)updateNowPlayingInfo:(NSDictionary *)info {
+    Class playingInfoCenter = NSClassFromString(@"MPNowPlayingInfoCenter");
+    if (playingInfoCenter) {
+        NSMutableDictionary *songInfo = [[NSMutableDictionary alloc] init];
+        MPMediaItemArtwork *albumArt = [[MPMediaItemArtwork alloc] initWithImage: info["artwork"]];
+        [songInfo setObject:info["songTitle"] forKey:MPMediaItemPropertyTitle];
+        [songInfo setObject:info["singerName"] forKey:MPMediaItemPropertyArtist];
+        [songInfo setObject:info["albumTitle"] forKey:MPMediaItemPropertyAlbumTitle];
+        [songInfo setObject:albumArt forKey:MPMediaItemPropertyArtwork];
+        [[MPNowPlayingInfoCenter defaultCenter] setNowPlayingInfo:songInfo];
+    }
+}
 }
 
 @end
