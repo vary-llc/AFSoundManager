@@ -83,6 +83,13 @@
     }
 }
 
+-(void)setMetadata:(NSDictionary *)metadata {
+    _title = metadata[@"title"]
+    _artist = metadata[@"artist"]
+    _album = metadata[@"album"]
+    _artwork = metadata[@"artwork"]
+}
+
 -(void)setInfoFromItem:(AVPlayerItem *)item {
     
     _duration = CMTimeGetSeconds(item.duration);
