@@ -220,17 +220,35 @@
 
 #pragma mark -- Now Playing Info
 -(void)updateNowPlayingInfo{
-    Class playingInfoCenter = NSClassFromString(@"MPNowPlayingInfoCenter");
-    if (playingInfoCenter) {
-        AFSoundItem *currentItem = [self getCurrentItem];
-        NSMutableDictionary *songInfo = [[NSMutableDictionary alloc] init];
-        MPMediaItemArtwork *albumArt = [[MPMediaItemArtwork alloc] initWithImage: currentItem.artwork];
-        [songInfo setObject:currentItem.title forKey:MPMediaItemPropertyTitle];
-        [songInfo setObject:currentItem.artist forKey:MPMediaItemPropertyArtist];
-        [songInfo setObject:currentItem.album forKey:MPMediaItemPropertyAlbumTitle];
-        [songInfo setObject:albumArt forKey:MPMediaItemPropertyArtwork];
-        [[MPNowPlayingInfoCenter defaultCenter] setNowPlayingInfo:songInfo];
+    AFSoundItem *currentItem = [self getCurrentItem];
+    [self setTitle:currentItem.title artist:currentItem.artist albumTitle:currentItem.album artwork:currentItem.artwork totalDuration:currentItem.duration currentTime:currentItem.timePlayed];
+}
+
+- (void)setTitle:(NSString *)title artist:(NSString *)artist albumTitle:(NSString *)albumTitle artwork:(UIImage *)artwork totalDuration:(NSNumber *)totalDuration currentTime:(NSNumber *)currentTime
+{
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[MPNowPlayingInfoCenter defaultCenter].nowPlayingInfo];
+    if (albumTitle) {
+        dict[MPMediaItemPropertyAlbumTitle] = albumTitle;
     }
+    if (title) {
+        dict[MPMediaItemPropertyTitle] = title;
+    }
+    if (artist) {
+        dict[MPMediaItemPropertyArtist] = artist;
+    }
+    if (artwork) {
+        dict[MPMediaItemPropertyArtwork] = [[MPMediaItemArtwork alloc] initWithImage: artwork];
+    }
+    if (totalDuration) {
+        dict[MPMediaItemPropertyPlaybackDuration] = totalDuration;
+    }
+    if (!currentTime) {
+        currentTime = @(0);
+    }
+    dict[MPNowPlayingInfoPropertyElapsedPlaybackTime] = currentTime;
+    dict[MPNowPlayingInfoPropertyDefaultPlaybackRate] = @1.0;
+    
+    [MPNowPlayingInfoCenter defaultCenter].nowPlayingInfo = dict;
 }
 
 @end
