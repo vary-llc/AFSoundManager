@@ -20,10 +20,10 @@ typedef NS_ENUM(NSInteger, AFSoundItemType) {
 -(id)initWithLocalResource:(NSString *)name atPath:(NSString *)path;
 -(id)initWithStreamingURL:(NSURL *)URL;
 
-@property (nonatomic, readonly) NSString *title;
-@property (nonatomic, readonly) NSString *album;
-@property (nonatomic, readonly) NSString *artist;
-@property (nonatomic, readonly) UIImage *artwork;
+@property (nonatomic) NSString *title;
+@property (nonatomic) NSString *album;
+@property (nonatomic) NSString *artist;
+@property (nonatomic) UIImage *artwork;
 
 @property (nonatomic, readonly) NSURL *URL;
 @property (nonatomic, readonly) NSInteger type;
@@ -31,7 +31,6 @@ typedef NS_ENUM(NSInteger, AFSoundItemType) {
 @property (nonatomic) NSInteger duration;
 @property (nonatomic) NSInteger timePlayed;
 
--(void)setMetadata:(NSDictionary *)metadata;
 -(void)setInfoFromItem:(AVPlayerItem *)item;
 
 @end
