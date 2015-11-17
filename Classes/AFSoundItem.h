@@ -31,6 +31,7 @@ typedef NS_ENUM(NSInteger, AFSoundItemType) {
 @property (nonatomic) NSInteger duration;
 @property (nonatomic) NSInteger timePlayed;
 
+-(void)setMetadata:(NSDictionary *)metadata;
 -(void)setInfoFromItem:(AVPlayerItem *)item;
 
 @end
