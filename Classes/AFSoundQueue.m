@@ -50,7 +50,7 @@
     }
     
     _feedbackTimer = [NSTimer scheduledTimerWithTimeInterval:updateRate block:^{
-        NSLog(@"%s: %f", __func__, updateRate);
+        //NSLog(@"%s: %f", __func__, updateRate);
         
         if (self.queuePlayer && self.queuePlayer.currentItem) {
             
