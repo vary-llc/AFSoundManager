@@ -36,6 +36,8 @@
 -(id)initWithItems:(NSArray *)items {
     
     if (self == [super init]) {
+    
+        [self addRemoteControlEvent];
         
         if (items) {
             
@@ -43,7 +45,6 @@
             
             _queuePlayer = [[AFSoundPlayback alloc] initWithItem:items.firstObject];
             
-            [self addRemoteControlEvent];
             //[[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
         }
     }
@@ -140,14 +141,12 @@
     
     [_queuePlayer play];
     [[MPRemoteCommandCenter sharedCommandCenter] playCommand];
-    [self.delegate queuePlay];
     [_feedbackTimer resumeTimer];
 }
 
 -(void)pause {
     [_queuePlayer pause];
     [[MPRemoteCommandCenter sharedCommandCenter] pauseCommand];
-    [self.delegate queuePause];
     [_feedbackTimer pauseTimer];
 }
 
@@ -155,7 +154,6 @@
     NSInteger nextIndex = [self.dataSource indexOfItem:[self.queuePlayer currentItem]] + 1;
     if ([self.dataSource numberOfItems] > nextIndex) {
         [self playItemAtIndex:nextIndex];
-        [self.delegate queueNext:nextIndex];
     }
 }
 
@@ -163,7 +161,6 @@
     NSInteger prevIndex = [self.dataSource indexOfItem:[self.queuePlayer currentItem]] - 1;
     if (prevIndex >= 0) {
         [self playItemAtIndex:prevIndex];
-        [self.delegate queuePrev:prevIndex];
     }
 }
 
@@ -193,7 +190,6 @@
     }
     
     [[MPRemoteCommandCenter sharedCommandCenter] playCommand];
-    [self.delegate queuePlay];
 }
 
 -(AFSoundItem *)getCurrentItem {
@@ -257,18 +253,22 @@
 -(void)remotePlay:(MPRemoteCommandEvent *)event {
     NSLog(@"remotePlay");
     [self playCurrentItem];
+    [self.delegate queuePlay];
 }
 -(void)remotePause:(MPRemoteCommandEvent *)event {
     NSLog(@"remotePause");
     [self pause];
+    [self.delegate queuePause];
 }
 -(void)remoteNextTrack:(MPRemoteCommandEvent *)event {
     NSLog(@"remoteNextTrack");
     [self playNextItem];
+    [self.delegate queueNext];
 }
 -(void)remotePrevTrack:(MPRemoteCommandEvent *)event {
     NSLog(@"remotePrevTrack");
     [self playPreviousItem];
+    [self.delegate queuePrev];
 }
 
 -(AFSoundStatus)status {
