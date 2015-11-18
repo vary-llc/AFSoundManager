@@ -20,7 +20,7 @@
 @end
 
 @protocol AFSoundQueueDelegate <NSObject>
--(void)queuePlay:(AFSoundItem *)item;
+-(void)queuePlay;
 -(void)queuePause;
 -(void)queueNext:(NSInteger)nextIndex;
 -(void)queuePrev:(NSInteger)prevIndex;
