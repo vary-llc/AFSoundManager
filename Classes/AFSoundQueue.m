@@ -193,7 +193,7 @@
     }
     
     [[MPRemoteCommandCenter sharedCommandCenter] playCommand];
-    [self.delegate play];
+    [self.delegate queuePlay];
 }
 
 -(AFSoundItem *)getCurrentItem {
