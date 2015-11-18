@@ -19,6 +19,13 @@
 - (NSInteger)indexOfItem:(AFSoundItem *)item;
 @end
 
+@protocol AFSoundQueueDelegate <NSObject>
+-(void)queuePlay:(AFSoundItem *)item;
+-(void)queuePause;
+-(void)queueNext:(NSInteger)nextIndex;
+-(void)queuePrev:(NSInteger)prevIndex;
+@end
+
 @interface AFSoundQueue : NSObject
 
 typedef void (^feedbackBlock)(AFSoundItem *item);
@@ -28,6 +35,7 @@ typedef void (^itemFinishedBlock)(AFSoundItem *nextItem);
 
 @property (nonatomic) AFSoundStatus status;
 @property (nonatomic, weak) id <AFSoundQueueDataSource> dataSource;
+@property (nonatomic, weak) id <AFSoundQueueDelegate> delegate;
 
 -(void)addItem:(AFSoundItem *)item;
 -(void)addItem:(AFSoundItem *)item atIndex:(NSInteger)index;
