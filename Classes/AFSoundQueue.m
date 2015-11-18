@@ -155,7 +155,7 @@
     NSInteger nextIndex = [self.dataSource indexOfItem:[self.queuePlayer currentItem]] + 1;
     if ([self.dataSource numberOfItems] > nextIndex) {
         [self playItemAtIndex:nextIndex];
-        [self.delegate queuePlayNext:nextIndex];
+        [self.delegate queueNext:nextIndex];
     }
 }
 
@@ -163,7 +163,7 @@
     NSInteger prevIndex = [self.dataSource indexOfItem:[self.queuePlayer currentItem]] - 1;
     if (prevIndex >= 0) {
         [self playItemAtIndex:prevIndex];
-        [self.delegate queuePlayPrev:prevIndex];
+        [self.delegate queuePrev:prevIndex];
     }
 }
 
