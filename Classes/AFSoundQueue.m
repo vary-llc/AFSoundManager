@@ -23,6 +23,7 @@
 
 @implementation AFSoundQueue
 
+/*
 -(id)init {
     
     if (self == [super init]) {
@@ -31,6 +32,7 @@
     
     return self;
 }
+*/
 
 -(id)initWithItems:(NSArray *)items {
     
@@ -42,7 +44,7 @@
             
             _queuePlayer = [[AFSoundPlayback alloc] initWithItem:items.firstObject];
             
-            [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+            //[[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
         }
     }
     
@@ -203,6 +205,7 @@
     return NAN;
 }
 
+/*
 -(void)remoteControlReceivedWithEvent:(UIEvent *)receivedEvent {
     
     if (receivedEvent.type == UIEventTypeRemoteControl) {
@@ -229,6 +232,7 @@
         }
     }
 }
+*/
 
 -(AFSoundStatus)status {
     return self.queuePlayer ? [self.queuePlayer status] : AFSoundStatusNotStarted;
