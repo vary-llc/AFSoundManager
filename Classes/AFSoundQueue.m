@@ -253,22 +253,22 @@
 -(void)remotePlay:(MPRemoteCommandEvent *)event {
     NSLog(@"remotePlay");
     [self playCurrentItem];
-    [self.delegate queuePlay];
+    [self.delegate queuePlayByRemote];
 }
 -(void)remotePause:(MPRemoteCommandEvent *)event {
     NSLog(@"remotePause");
     [self pause];
-    [self.delegate queuePause];
+    [self.delegate queuePauseByRemote];
 }
 -(void)remoteNextTrack:(MPRemoteCommandEvent *)event {
     NSLog(@"remoteNextTrack");
     [self playNextItem];
-    [self.delegate queueNext];
+    [self.delegate queueNextByRemote];
 }
 -(void)remotePrevTrack:(MPRemoteCommandEvent *)event {
     NSLog(@"remotePrevTrack");
     [self playPreviousItem];
-    [self.delegate queuePrev];
+    [self.delegate queuePrevByRemote];
 }
 
 -(AFSoundStatus)status {
