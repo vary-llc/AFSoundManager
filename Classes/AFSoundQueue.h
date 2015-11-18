@@ -20,10 +20,10 @@
 @end
 
 @protocol AFSoundQueueDelegate <NSObject>
--(void)queuePlayRemoted;
--(void)queuePauseRemoted;
--(void)queueNextRemoted;
--(void)queuePrevRemoted;
+-(void)queuePlayByRemote;
+-(void)queuePauseByRemote;
+-(void)queueNextByRemote;
+-(void)queuePrevByRemote;
 @end
 
 @interface AFSoundQueue : NSObject
