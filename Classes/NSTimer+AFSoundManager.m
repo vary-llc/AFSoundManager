@@ -39,7 +39,7 @@ static NSString *const NSTimerPauseDate = @"NSTimerPauseDate";
 static NSString *const NSTimerPreviousFireDate = @"NSTimerPreviousFireDate";
 
 -(void)pauseTimer {
-    NSLog(@"%s", __func__);
+    //NSLog(@"%s", __func__);
     if (self.timerPaused != nil && ![self.timerPaused boolValue]) {
         self.timerPaused = @(YES);
         
@@ -51,7 +51,7 @@ static NSString *const NSTimerPreviousFireDate = @"NSTimerPreviousFireDate";
 }
 
 -(void)resumeTimer {
-    NSLog(@"%s", __func__);
+    //NSLog(@"%s", __func__);
     if (self.timerPaused == nil || [self.timerPaused boolValue]) {
         NSDate *pauseDate = objc_getAssociatedObject(self, (__bridge const void *)NSTimerPauseDate);
         NSDate *previousFireDate = objc_getAssociatedObject(self, (__bridge const void *)NSTimerPreviousFireDate);
