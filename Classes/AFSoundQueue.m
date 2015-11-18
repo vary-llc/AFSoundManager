@@ -140,13 +140,14 @@
     
     [_queuePlayer play];
     [[MPRemoteCommandCenter sharedCommandCenter] playCommand];
-    
+    [self.delegate play];
     [_feedbackTimer resumeTimer];
 }
 
 -(void)pause {
     [_queuePlayer pause];
     [[MPRemoteCommandCenter sharedCommandCenter] pauseCommand];
+    [self.delegate pause];
     [_feedbackTimer pauseTimer];
 }
 
@@ -154,6 +155,7 @@
     NSInteger nextIndex = [self.dataSource indexOfItem:[self.queuePlayer currentItem]] + 1;
     if ([self.dataSource numberOfItems] > nextIndex) {
         [self playItemAtIndex:nextIndex];
+        [self.delegate playNext:nextIndex];
     }
 }
 
@@ -161,6 +163,7 @@
     NSInteger prevIndex = [self.dataSource indexOfItem:[self.queuePlayer currentItem]] - 1;
     if (prevIndex >= 0) {
         [self playItemAtIndex:prevIndex];
+        [self.delegate playPrev:prevIndex];
     }
 }
 
@@ -190,6 +193,7 @@
     }
     
     [[MPRemoteCommandCenter sharedCommandCenter] playCommand];
+    [self.delegate play];
 }
 
 -(AFSoundItem *)getCurrentItem {
