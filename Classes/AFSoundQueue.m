@@ -234,7 +234,6 @@
 }
 */
 
-
 -(void)addRemoteControlEvent{
     [[[MPRemoteCommandCenter sharedCommandCenter] togglePlayPauseCommand] addTarget:self action:@selector(remoteTogglePlayPause:)];
     [[[MPRemoteCommandCenter sharedCommandCenter] playCommand] addTarget:self action:@selector(remotePlay:)];
@@ -245,20 +244,29 @@
 
 -(void)remoteTogglePlayPause:(MPRemoteCommandEvent *)event {
     NSLog(@"remoteTogglePlayPause");
+    if (self.queuePlayer.status == AFSoundStatusNotStarted || self.queuePlayer.status == AFSoundStatusPaused || self.queuePlayer.status == AFSoundStatusFinished) {
+        [self playCurrentItem];
+    }else{
+        [self pause];
+    }
 }
 -(void)remotePlay:(MPRemoteCommandEvent *)event {
     NSLog(@"remotePlay");
+    [self playCurrentItem];
 }
 -(void)remotePause:(MPRemoteCommandEvent *)event {
     NSLog(@"remotePause");
+    [self pause];
 }
 -(void)remoteNextTrack:(MPRemoteCommandEvent *)event {
     NSLog(@"remoteNextTrack");
+    [self playNextItem];
 }
 -(void)remotePrevTrack:(MPRemoteCommandEvent *)event {
     NSLog(@"remotePrevTrack");
+    [self playPreviousItem];
 }
-    
+
 -(AFSoundStatus)status {
     return self.queuePlayer ? [self.queuePlayer status] : AFSoundStatusNotStarted;
 }
