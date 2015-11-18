@@ -140,14 +140,14 @@
     
     [_queuePlayer play];
     [[MPRemoteCommandCenter sharedCommandCenter] playCommand];
-    [self.delegate play];
+    [self.delegate queuePlay];
     [_feedbackTimer resumeTimer];
 }
 
 -(void)pause {
     [_queuePlayer pause];
     [[MPRemoteCommandCenter sharedCommandCenter] pauseCommand];
-    [self.delegate pause];
+    [self.delegate queuePause];
     [_feedbackTimer pauseTimer];
 }
 
@@ -155,7 +155,7 @@
     NSInteger nextIndex = [self.dataSource indexOfItem:[self.queuePlayer currentItem]] + 1;
     if ([self.dataSource numberOfItems] > nextIndex) {
         [self playItemAtIndex:nextIndex];
-        [self.delegate playNext:nextIndex];
+        [self.delegate queuePlayNext:nextIndex];
     }
 }
 
@@ -163,7 +163,7 @@
     NSInteger prevIndex = [self.dataSource indexOfItem:[self.queuePlayer currentItem]] - 1;
     if (prevIndex >= 0) {
         [self playItemAtIndex:prevIndex];
-        [self.delegate playPrev:prevIndex];
+        [self.delegate queuePlayPrev:prevIndex];
     }
 }
 
