@@ -236,11 +236,11 @@
 
 
 -(void)addRemoteControlEvent{
-    [[[MPRemoteCommandCenter sharedCommandCenter] togglePlayPauseCommand] addTarget:self, action:@selector(remoteTogglePlayPause:)];
-    [[[MPRemoteCommandCenter sharedCommandCenter] playCommand] addTarget:self, action:@selector(remotePlay:)];
-    [[[MPRemoteCommandCenter sharedCommandCenter] pauseCommand] addTarget:self, action:@selector(remotePause:)];
-    [[[MPRemoteCommandCenter sharedCommandCenter] nextTrackCommand] addTarget:self, action:@selector(remoteNextTrack:)];
-    [[[MPRemoteCommandCenter sharedCommandCenter] previousTrackCommand] addTarget:self, action:@selector(remotePrevTrack:)];
+    [[[MPRemoteCommandCenter sharedCommandCenter] togglePlayPauseCommand] addTarget:self action:@selector(remoteTogglePlayPause:)];
+    [[[MPRemoteCommandCenter sharedCommandCenter] playCommand] addTarget:self action:@selector(remotePlay:)];
+    [[[MPRemoteCommandCenter sharedCommandCenter] pauseCommand] addTarget:self action:@selector(remotePause:)];
+    [[[MPRemoteCommandCenter sharedCommandCenter] nextTrackCommand] addTarget:self action:@selector(remoteNextTrack:)];
+    [[[MPRemoteCommandCenter sharedCommandCenter] previousTrackCommand] addTarget:self action:@selector(remotePrevTrack:)];
 }
 
 -(void)remoteTogglePlayPause:(MPRemoteCommandEvent *)event {
