@@ -23,6 +23,15 @@
 
 @implementation AFSoundQueue
 
+-(id)init {
+    
+    if (self == [super init]) {
+        [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+    }
+    
+    return self;
+}
+
 -(id)initWithItems:(NSArray *)items {
     
     if (self == [super init]) {
@@ -34,7 +43,6 @@
             _queuePlayer = [[AFSoundPlayback alloc] initWithItem:items.firstObject];
             
             [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
-            [self becomeFirstResponder];
         }
     }
     
