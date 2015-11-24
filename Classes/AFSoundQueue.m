@@ -66,7 +66,7 @@
         
         if (self.queuePlayer && self.queuePlayer.currentItem) {
             
-            if (self.queuePlayer.currentItem.timePlayed > 0) {
+            if (self.queuePlayer.currentItem.timePlayed >= 0) {
                 [self updateNowPlayingInfo];
             }
             
