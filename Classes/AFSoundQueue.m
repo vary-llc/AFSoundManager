@@ -153,9 +153,11 @@
 -(void)playNextItem {
     NSInteger nextIndex = [self.dataSource indexOfItem:[self.queuePlayer currentItem]] + 1;
     if ([self.dataSource numberOfItems] > nextIndex) {
-        [self playItemAtIndex:nextIndex];
         if (self.queuePlayer.status == AFSoundStatusNotStarted || self.queuePlayer.status == AFSoundStatusPaused || self.queuePlayer.status == AFSoundStatusFinished) {
+            [self playItemAtIndex:nextIndex];
             [self pause];
+        }else{
+            [self playItemAtIndex:nextIndex];
         }
     }
 }
@@ -165,7 +167,10 @@
     if (prevIndex >= 0) {
         [self playItemAtIndex:prevIndex];
         if (self.queuePlayer.status == AFSoundStatusNotStarted || self.queuePlayer.status == AFSoundStatusPaused || self.queuePlayer.status == AFSoundStatusFinished) {
+            [self playItemAtIndex:prevIndex];
             [self pause];
+        }else{
+            [self playItemAtIndex:prevIndex];
         }
     }
 }
