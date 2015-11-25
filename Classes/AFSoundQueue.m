@@ -154,6 +154,9 @@
     NSInteger nextIndex = [self.dataSource indexOfItem:[self.queuePlayer currentItem]] + 1;
     if ([self.dataSource numberOfItems] > nextIndex) {
         [self playItemAtIndex:nextIndex];
+        if (self.queuePlayer.status == AFSoundStatusNotStarted || self.queuePlayer.status == AFSoundStatusPaused || self.queuePlayer.status == AFSoundStatusFinished) {
+            [self pause];
+        }
     }
 }
 
@@ -161,6 +164,9 @@
     NSInteger prevIndex = [self.dataSource indexOfItem:[self.queuePlayer currentItem]] - 1;
     if (prevIndex >= 0) {
         [self playItemAtIndex:prevIndex];
+        if (self.queuePlayer.status == AFSoundStatusNotStarted || self.queuePlayer.status == AFSoundStatusPaused || self.queuePlayer.status == AFSoundStatusFinished) {
+            [self pause];
+        }
     }
 }
 
@@ -251,22 +257,18 @@
     }
 }
 -(void)remotePlay:(MPRemoteCommandEvent *)event {
-    NSLog(@"remotePlay");
     [self playCurrentItem];
     [self.delegate queuePlayByRemote];
 }
 -(void)remotePause:(MPRemoteCommandEvent *)event {
-    NSLog(@"remotePause");
     [self pause];
     [self.delegate queuePauseByRemote];
 }
 -(void)remoteNextTrack:(MPRemoteCommandEvent *)event {
-    NSLog(@"remoteNextTrack");
     [self playNextItem];
     [self.delegate queueNextByRemote];
 }
 -(void)remotePrevTrack:(MPRemoteCommandEvent *)event {
-    NSLog(@"remotePrevTrack");
     [self playPreviousItem];
     [self.delegate queuePrevByRemote];
 }
